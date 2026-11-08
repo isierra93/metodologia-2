@@ -18,16 +18,20 @@ class GestorSolicitudes:
     def __init__(self):
         self.cargar()
 
+    def calcular_ultimo_id(self, lista_solicitudes):
+        ultimo = 0
+        for solicitud in lista_solicitudes:
+            if solicitud["id"] > ultimo:
+                ultimo = solicitud["id"]
+        return ultimo
+
     def cargar(self):
         global solicitudes, ultimo_id
         try:
             with open(ARCHIVO, "r", encoding="utf-8") as f:
                 d = f.read()
             solicitudes = json.loads(d)
-            ultimo_id = 0
-            for i in range(len(solicitudes)):
-                if solicitudes[i]["id"] > ultimo_id:
-                    ultimo_id = solicitudes[i]["id"]
+            ultimo_id = self.calcular_ultimo_id(solicitudes)
         except Exception:
             solicitudes = []
 
@@ -42,9 +46,9 @@ class GestorSolicitudes:
         return solicitudes
 
     def buscar_por_id(self, id):
-        for i in range(len(solicitudes)):
-            if solicitudes[i]["id"] == id:
-                return solicitudes[i]
+        for solicitud in solicitudes:
+            if solicitud["id"] == id:
+                return solicitud
         return None
 
     # crea una solicitud nueva, valida todo y la guarda
