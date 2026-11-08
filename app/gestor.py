@@ -46,9 +46,9 @@ class GestorSolicitudes:
         return solicitudes
 
     def buscar_por_id(self, id):
-        for i in range(len(solicitudes)):
-            if solicitudes[i]["id"] == id:
-                return solicitudes[i]
+        for solicitud in solicitudes:
+            if solicitud["id"] == id:
+                return solicitud
         return None
 
     # crea una solicitud nueva, valida todo y la guarda
