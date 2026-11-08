@@ -2,7 +2,7 @@ import json
 import os
 import re
 from datetime import datetime, timedelta, timezone
-
+from app.prioridades import CalculadoraPrioridad
 # archivo donde se guardan las solicitudes
 ARCHIVO = os.environ.get("DATA_FILE") or os.path.join(os.path.dirname(__file__), "..", "data", "solicitudes.json")
 
@@ -73,19 +73,21 @@ class GestorSolicitudes:
             if s["legajo"] == str(legajo) and s["tipo"] == tipo and (s["estado"] == 0 or s["estado"] == 1):
                 return {"error": "Ya existe una solicitud abierta de ese tipo para el alumno"}
 
-        # prioridad segun tipo
-        if tipo == "MESA_EXAMEN":
-            p = "ALTA"
-        elif tipo == "RECLAMO_NOTA":
-            p = "ALTA"
-        elif tipo == "EQUIVALENCIA":
-            p = "MEDIA"
-        elif tipo == "BAJA_MATERIA":
-            p = "MEDIA"
-        else:
-            p = "BAJA"
-        if urgente == True or urgente == "true" or urgente == "URG":
-            p = "ALTA"
+                # Calculamos la prioridad con una clase independiente
+        calculadora = CalculadoraPrioridad()
+        p = calculadora.calcular(tipo, urgente)
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
 
         # plazo en dias
         if tipo == "CERTIFICADO":
